@@ -245,11 +245,13 @@ iteration:
                 AssetIssuance assetIssuance;
                 assetIssuance.issuerPublicKey = issuerPublicKey;
                 assetIssuance.numberOfShares = numberOfShares;
-                assetIssuance.managingContractIndex = managingContractIndex; // any SC can call issueAsset now (eg: QBOND) not just QX
-                *((unsigned long long*) assetIssuance.name) = *((unsigned long long*) name); // Order must be preserved!
-                assetIssuance.numberOfDecimalPlaces = numberOfDecimalPlaces; // Order must be preserved!
-                *((unsigned long long*) assetIssuance.unitOfMeasurement) = *((unsigned long long*) unitOfMeasurement); // Order must be preserved!
+                assetIssuance.managingContractIndex = managingContractIndex;
+                memcpy(assetIssuance.name, name, sizeof(unsigned long long));
+                assetIssuance.numberOfDecimalPlaces = numberOfDecimalPlaces;
+                memcpy(assetIssuance.unitOfMeasurement, unitOfMeasurement, sizeof(unsigned long long));
+
                 logger.logAssetIssuance(assetIssuance);
+
 
                 return numberOfShares;
             }
